@@ -11,12 +11,46 @@ class Board {
     }
   }
 
-  won() {
+  won(mark) {
+    //check rows and columns 
+    for(let i = 0; i < this.board.length; i++) {
+      let col = [];
+      let row = [];
+      for(let j = 0; j < this.board.length; j++) {
+        if (this.board[i][j] === mark) {
+          row.push(mark);
+        }
+        if (this.board[j][i] === mark) {
+          col.push(mark);
+        }
+      }
+      if (col.length === 3 || row.length === 3) {
+        return true;
+      }
+    }
 
+    //check diagonals
+    let forwardDiag = [];
+    let backwardDiag = [];
+
+    for (let i = 0; i < this.board.length; i++) {
+      if (this.board[i][i] === mark) {
+        forwardDiag.push(mark);
+      }
+      if (this.board[i][this.board.length - 1 - i] === mark) {
+        backwardDiag.push(mark);
+      }
+    }
+
+    if (forwardDiag.length === 3 || backwardDiag.length === 3) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   winner() {
-
+    return this.won('X') || this.won('O');
   }
 
   empty(pos) {
@@ -49,4 +83,27 @@ class Board {
   }
 }
 let board = new Board();
-console.log(board.empty([0, 0]));
+// console.log(board.empty([0, 0]));
+
+//Row Winner
+// board.place_mark([0,0], 'X');
+// board.place_mark([0,1], 'X');
+// board.place_mark([0,2], 'X');
+
+// //Column Winner
+// board.place_mark([0,0], 'X');
+// board.place_mark([1,0], 'X');
+// board.place_mark([2,0], 'X');
+
+// //Forward Diagonal Winner
+// board.place_mark([0,0], 'X');
+// board.place_mark([1,1], 'X');
+// board.place_mark([2,2], 'X');
+
+// //Backward Diagonal Winner
+// board.place_mark([0,2], 'X');
+// board.place_mark([1,1], 'X');
+// board.place_mark([2,0], 'X');
+
+console.log(board.won('X'));
+console.log(board);
