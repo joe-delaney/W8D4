@@ -9,6 +9,12 @@ class Board {
       }
       this.board.push(row);
     }
+
+    this.won = this.won.bind(this);
+    this.winner = this.winner.bind(this);
+    this.empty = this.empty.bind(this);
+    this.place_mark = this.place_mark.bind(this);
+    this.print = this.print.bind(this);
   }
 
   won(mark) {
@@ -81,8 +87,16 @@ class Board {
     console.log('---------');
     console.log(this.board[2].join(' | '));
   }
+
+  validMove(pos) {
+    let x = pos[0];
+    let y = pos[1];
+    if(x < 0 || x >= 3 || y < 0 || y >=3) return false;
+    return true;
+  }
 }
-let board = new Board();
+module.exports = Board;
+// let board = new Board();
 // console.log(board.empty([0, 0]));
 
 //Row Winner
@@ -105,5 +119,5 @@ let board = new Board();
 // board.place_mark([1,1], 'X');
 // board.place_mark([2,0], 'X');
 
-console.log(board.won('X'));
-console.log(board);
+// console.log(board.won('X'));
+// console.log(board.print());
