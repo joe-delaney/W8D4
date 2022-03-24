@@ -1,53 +1,32 @@
 const Board = require('./board.js');
+const HumanPlayer = require('./humanPlayer.js');
 
 class Game {
   constructor(reader) {
     this.reader = reader;
     this.board = new Board();
-    this.current_mark = 'X';
+    this.player1 = new HumanPlayer('X', this);
+    this.player2 = new HumanPlayer('O', this);
+    this.currentPlayer = this.player1;
   }
 
-  switch_player() {
-    if(this.current_mark === 'X') {
-      this.current_mark = 'O';
+  switchPlayer() {
+    if(this.currentPlayer === this.player1) {
+      this.currentPlayer = this.player2;
     } else {
-      this.current_mark = 'X';
-    }
-  }
-
-  playTurn(reader, callback) {
-    this.board.print();
-    reader.question(`Select position to place your mark`, handleResponse.bind(this));
-
-    function handleResponse(answer) {
-      let pos = JSON.parse(answer);
-      if (!this.board.validMove(pos)) {
-        console.log("Invalid Move!");
-        this.playTurn(reader, callback);
-        return;
-      }
-
-      this.board.place_mark(pos, this.current_mark);
-      this.switch_player();
-      callback();
+      this.currentPlayer = this.player1;
     }
   }
 
   run(reader, completionCallback) {
-    //while game is not over
-    //start with current player
-    //prompt current player for input
-    //After successful input, place the mark on the board
-    //switch to the next player
-
       if(this.board.winner()) {
         this.board.print();
-        this.switch_player();
-        console.log(`${this.current_mark} Wins!`);
+        this.switchPlayer();
+        console.log(`${this.currentPlayer.mark} Wins!`);
         completionCallback();
       }
       else {
-        this.playTurn(reader, this.run.bind(this, reader, completionCallback));
+        this.currentPlayer.playTurn(reader, this.run.bind(this, reader, completionCallback));
       }
     }
 }

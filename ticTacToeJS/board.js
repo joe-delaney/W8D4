@@ -59,6 +59,16 @@ class Board {
     return this.won('X') || this.won('O');
   }
 
+  winnerMark() {
+    if(this.tied()) {
+      return "TIE";
+    } else if(this.won('X')) {
+      return 'X';
+    } else if(this.won('O')) {
+      return 'O';
+    }
+  }
+
   empty(pos) {
     let x = pos[0];
     let y = pos[1];
@@ -92,6 +102,16 @@ class Board {
     let x = pos[0];
     let y = pos[1];
     if(x < 0 || x >= 3 || y < 0 || y >=3) return false;
+    return true;
+  }
+
+  tied() {
+    if(this.winner()) return false;
+    for(let i = 0; i < this.board.length; i++) {
+      for(let j = 0; j < this.board.length; j++) {
+        if(this.board[i][j] === ' ') return false;
+      }
+    }
     return true;
   }
 }
